@@ -8,6 +8,8 @@ from math import log
 from sklearn.metrics import confusion_matrix, roc_curve
 from keras.utils.np_utils import to_categorical
 from collections import OrderedDict
+from keras_eval.visualizer import plot_confusion_matrix
+import matplotlib as plt
 
 
 def metrics_top_k(y_probs, y_true, concepts, top_k, round_decimals=7):
@@ -330,3 +332,11 @@ def get_top1_entropy_stats(y_probs, labels, entropy, verbose=0):
     n_errors = np.array(n_errors)
 
     return correct_list, errors_list, n_correct, n_errors
+
+
+def confusion_matrix_differential(confusion_matrix_1, confusion_matrix_2, concepts, normalize=False, fontsize=18,
+                                  figsize=(16, 12), cmap=plt.cm.coolwarm_r, save_path=None):
+
+    confusion_matrix = confusion_matrix_1 - confusion_matrix_2
+
+    plot_confusion_matrix(confusion_matrix, concepts, normalize, fontsize, figsize, cmap, save_path)
